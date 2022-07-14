@@ -37,3 +37,28 @@ func ConnectDB() error {
 
 	return err
 }
+
+func DBConnection() string {
+	host := "localhost"
+	user := "postgres"
+	password := "example"
+	port := "5432"
+	dbName := "postgres"
+
+	fmt.Println("host ---->", host)
+	fmt.Println("dbName ---->", dbName)
+
+	timezone := "Asia/Bangkok"
+	applicationName := "subscription-service"
+
+	return fmt.Sprintf(
+		"host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=%s application_name=%s",
+		host,
+		user,
+		password,
+		dbName,
+		port,
+		timezone,
+		applicationName,
+	)
+}
