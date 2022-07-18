@@ -63,7 +63,8 @@ func setUpServer() (http.Handler, error) {
 
 	// subscription route.
 	subscriptionSubRouter := consumerSubRouter.PathPrefix("/bicycle").Subrouter()
-	subscriptionSubRouter.Handle("/get-list", bicycles.MakeGetSubscriptionPackageHandler(bicyclesService)).Methods(http.MethodGet)
+	subscriptionSubRouter.Handle("/get-list", bicycles.MakeGetListBicyclesHandler(bicyclesService)).Methods(http.MethodGet)
+	subscriptionSubRouter.Handle("/buy", bicycles.MakeBuyBicycleHandler(bicyclesService)).Methods(http.MethodPut)
 
 	return router, nil
 }

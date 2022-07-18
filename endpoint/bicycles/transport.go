@@ -1,25 +1,26 @@
 package bicycles
 
 import (
+	"bicycles-shop/model"
 	"context"
 	"encoding/json"
 	kithttp "github.com/go-kit/kit/transport/http"
 	"net/http"
 )
 
-func MakeGetSubscriptionPackageHandler(bs BicyclesService) http.Handler {
+func MakeGetListBicyclesHandler(bs BicyclesService) http.Handler {
 	return kithttp.NewServer(
 		makeGetListBicyclesEndpoint(bs),
-		decodeGetSubscriptionPackageRequest,
-		encodeGetSubscriptionPackageResponse,
+		decodeGetListBicyclesRequest,
+		encodeResponse,
 	)
 }
 
-func decodeGetSubscriptionPackageRequest(ctx context.Context, req *http.Request) (interface{}, error) {
+func decodeGetListBicyclesRequest(ctx context.Context, req *http.Request) (interface{}, error) {
 	return nil, nil
 }
 
-func encodeGetSubscriptionPackageResponse(ctx context.Context, w http.ResponseWriter, response interface{}) error {
+func encodeResponse(ctx context.Context, w http.ResponseWriter, response interface{}) error {
 
 	if _, ok := response.(error); ok {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -28,4 +29,23 @@ func encodeGetSubscriptionPackageResponse(ctx context.Context, w http.ResponseWr
 
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	return json.NewEncoder(w).Encode(response)
+}
+
+func MakeBuyBicycleHandler(bs BicyclesService) http.Handler {
+	return kithttp.NewServer(
+		makeBuyBicycleEndpoint(bs),
+		decodeBuyBicycleRequest,
+		encodeResponse,
+	)
+}
+
+func decodeBuyBicycleRequest(_ context.Context, r *http.Request) (interface{}, error) {
+	var req model.BuyBicycleRequest
+	err := json.NewDecoder(r.Body).Decode(&req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
 }
