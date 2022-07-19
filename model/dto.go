@@ -30,3 +30,17 @@ type BuyBicycleRequest struct {
 	Address   string `json:"address"`
 	Tel       string `json:"tel"`
 }
+
+type BicycleRequest struct {
+	ID          int     `json:"id"`
+	Brand       string  `json:"brand"`
+	Model       string  `json:"model"`
+	Description string  `json:"description"`
+	Price       float64 `json:"price"`
+}
+
+type CreateBicycleResponse struct {
+	Success bool     `json:"success"`
+	Data    Bicycles `json:"data"`
+	Message string   `json:"message"`
+}

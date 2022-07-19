@@ -11,6 +11,7 @@ type BicyclesRepository interface {
 	UpdateBuyStatusBicycle(ctx context.Context, id int) error
 	GetBicycleCanBuy(ctx context.Context, id int) (model.Bicycles, error)
 	InsertBuyer(ctx context.Context, buyers model.Buyers) error
+	InsertBicycle(bicycle model.Bicycles) (model.Bicycles, error)
 }
 
 type bicyclesRepository struct {
@@ -58,4 +59,13 @@ func (r *bicyclesRepository) InsertBuyer(ctx context.Context, buyers model.Buyer
 	}
 
 	return nil
+}
+
+func (r *bicyclesRepository) InsertBicycle(bicycle model.Bicycles) (model.Bicycles, error) {
+	err := r.db.Create(&bicycle).Error
+	if err != nil {
+		return model.Bicycles{}, err
+	}
+
+	return bicycle, nil
 }

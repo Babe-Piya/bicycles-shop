@@ -9,6 +9,7 @@ import (
 type BicyclesService interface {
 	GetListBicycles(ctx context.Context) (model.BicyclesResponse, error)
 	BuyStatusBicycle(ctx context.Context, req model.BuyBicycleRequest) (model.BuyBicycleResponse, error)
+	CreateBicycle(req model.BicycleRequest) (model.CreateBicycleResponse, error)
 }
 
 type bicyclesService struct {
@@ -86,4 +87,24 @@ func (bs *bicyclesService) BuyStatusBicycle(ctx context.Context, req model.BuyBi
 		Data:    bicycleData,
 	}
 	return response, nil
+}
+
+func (bs *bicyclesService) CreateBicycle(req model.BicycleRequest) (model.CreateBicycleResponse, error) {
+	bicycleReq := model.Bicycles{
+		Brand:       req.Brand,
+		Model:       req.Model,
+		Description: req.Description,
+		Price:       req.Price,
+	}
+
+	bicycleRes, err := bs.repo.InsertBicycle(bicycleReq)
+	if err != nil {
+		return model.CreateBicycleResponse{}, nil
+	}
+	res := model.CreateBicycleResponse{
+		Success: true,
+		Data:    bicycleRes,
+	}
+
+	return res, nil
 }
