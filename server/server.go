@@ -6,6 +6,7 @@ import (
 	"bicycles-shop/repository"
 	"fmt"
 	"github.com/gorilla/mux"
+	"go.uber.org/zap"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"log"
@@ -50,6 +51,8 @@ func setUpServer() (http.Handler, error) {
 		return nil, fmt.Errorf("cannot setup database %w", err)
 	}
 
+	initLogger()
+
 	//repo
 	bicyclesRepo := repository.New(db)
 
@@ -65,7 +68,7 @@ func setUpServer() (http.Handler, error) {
 	subscriptionSubRouter := consumerSubRouter.PathPrefix("/bicycle").Subrouter()
 	subscriptionSubRouter.Handle("/get-list", bicycles.MakeGetListBicyclesHandler(bicyclesService)).Methods(http.MethodGet)
 	subscriptionSubRouter.Handle("/buy", bicycles.MakeBuyBicycleHandler(bicyclesService)).Methods(http.MethodPut)
-	subscriptionSubRouter.Handle("/create", bicycles.MakeBuyBicycleHandler(bicyclesService)).Methods(http.MethodPost)
+	subscriptionSubRouter.Handle("/create", bicycles.MakeCreateBicycleHandler(bicyclesService)).Methods(http.MethodPost)
 
 	return router, nil
 }
@@ -73,4 +76,18 @@ func setUpServer() (http.Handler, error) {
 func setUpDatabase() (*gorm.DB, error) {
 	dsn := model.DBConnection()
 	return gorm.Open(postgres.Open(dsn), &gorm.Config{})
+}
+
+func initLogger() {
+	var (
+		logger *zap.Logger
+		err    error
+	)
+	logger, err = zap.NewDevelopment()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	zap.ReplaceGlobals(logger)
 }

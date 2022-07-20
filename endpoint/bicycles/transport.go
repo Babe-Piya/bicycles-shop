@@ -4,6 +4,7 @@ import (
 	"bicycles-shop/model"
 	"context"
 	"encoding/json"
+	"errors"
 	kithttp "github.com/go-kit/kit/transport/http"
 	"net/http"
 )
@@ -41,6 +42,29 @@ func MakeBuyBicycleHandler(bs BicyclesService) http.Handler {
 
 func decodeBuyBicycleRequest(_ context.Context, r *http.Request) (interface{}, error) {
 	var req model.BuyBicycleRequest
+	err := json.NewDecoder(r.Body).Decode(&req)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+func MakeCreateBicycleHandler(bs BicyclesService) http.Handler {
+	return kithttp.NewServer(
+		makeCreateBicycleEndpoint(bs),
+		decodeCreateBicycleRequest,
+		encodeResponse,
+	)
+}
+
+func decodeCreateBicycleRequest(_ context.Context, r *http.Request) (interface{}, error) {
+	var req model.BicycleRequest
+	auth := r.Header.Get("Authorization")
+	if auth != "tokensomething" {
+		return nil, errors.New("authorization failed")
+	}
 	err := json.NewDecoder(r.Body).Decode(&req)
 
 	if err != nil {

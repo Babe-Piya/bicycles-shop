@@ -32,7 +32,6 @@ type BuyBicycleRequest struct {
 }
 
 type BicycleRequest struct {
-	ID          int     `json:"id"`
 	Brand       string  `json:"brand"`
 	Model       string  `json:"model"`
 	Description string  `json:"description"`

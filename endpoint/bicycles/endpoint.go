@@ -21,6 +21,17 @@ func makeBuyBicycleEndpoint(bs BicyclesService) endpoint.Endpoint {
 		req := request.(model.BuyBicycleRequest)
 		response, err = bs.BuyStatusBicycle(ctx, req)
 		if err != nil {
+			return response, nil
+		}
+		return response, nil
+	}
+}
+
+func makeCreateBicycleEndpoint(bs BicyclesService) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+		req := request.(model.BicycleRequest)
+		response, err = bs.CreateBicycle(req)
+		if err != nil {
 			return nil, err
 		}
 		return response, nil
