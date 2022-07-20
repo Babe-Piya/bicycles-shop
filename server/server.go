@@ -65,10 +65,14 @@ func setUpServer() (http.Handler, error) {
 	consumerSubRouter := router.PathPrefix("/").Subrouter()
 
 	// subscription route.
-	subscriptionSubRouter := consumerSubRouter.PathPrefix("/bicycle").Subrouter()
-	subscriptionSubRouter.Handle("/get-list", bicycles.MakeGetListBicyclesHandler(bicyclesService)).Methods(http.MethodGet)
-	subscriptionSubRouter.Handle("/buy", bicycles.MakeBuyBicycleHandler(bicyclesService)).Methods(http.MethodPut)
-	subscriptionSubRouter.Handle("/create", bicycles.MakeCreateBicycleHandler(bicyclesService)).Methods(http.MethodPost)
+	bicycleSubRouter := consumerSubRouter.PathPrefix("/bicycle").Subrouter()
+	bicycleSubRouter.Handle("/get-list", bicycles.MakeGetListBicyclesHandler(bicyclesService)).Methods(http.MethodGet)
+	bicycleSubRouter.Handle("/buy", bicycles.MakeBuyBicycleHandler(bicyclesService)).Methods(http.MethodPut)
+
+	//admin route
+	adminRouter := router.PathPrefix("/admin").Subrouter()
+	adminBicycleRouter := adminRouter.PathPrefix("/bicycle").Subrouter()
+	adminBicycleRouter.Handle("/create", bicycles.MakeCreateBicycleHandler(bicyclesService)).Methods(http.MethodPost)
 
 	return router, nil
 }
