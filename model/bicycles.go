@@ -9,6 +9,7 @@ type Bicycles struct {
 	Description string    `json:"description"`
 	Price       float64   `json:"price"`
 	Status      int       `json:"status"`
+	Url         string    `json:"url"`
 	CreatedAt   time.Time `json:"created_at"`
 	UpdatedAt   time.Time `json:"updated_at"`
 }
@@ -19,5 +20,6 @@ type Buyers struct {
 	Name      string    `json:"name"`
 	Address   string    `json:"address"`
 	Tel       string    `json:"tel"`
+	Slip      string    `json:"slip"`
 	CreatedAt time.Time `json:"created_at"`
 }

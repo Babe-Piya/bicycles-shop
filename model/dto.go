@@ -36,6 +36,7 @@ type BicycleRequest struct {
 	Model       string  `json:"model"`
 	Description string  `json:"description"`
 	Price       float64 `json:"price"`
+	Url         string  `json:"url"`
 }
 
 type CreateBicycleResponse struct {

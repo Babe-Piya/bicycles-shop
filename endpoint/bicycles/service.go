@@ -105,6 +105,7 @@ func (bs *bicyclesService) CreateBicycle(req model.BicycleRequest) (model.Create
 		Model:       req.Model,
 		Description: req.Description,
 		Status:      1,
+		Url:         req.Url,
 		Price:       req.Price,
 	}
 
